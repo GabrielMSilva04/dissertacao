@@ -1,0 +1,8 @@
+# LOGBOOK.md is a prose diary, and Talisman's filecontent detector matches ordinary
+# English sentences in it. A checksum entry would need regenerating every week the
+# logbook is updated, so content detection is disabled for this one file instead.
+fileignoreconfig:
+- filename: LOGBOOK.md
+  ignore_detectors:
+  - filecontent
+version: "1.0"
