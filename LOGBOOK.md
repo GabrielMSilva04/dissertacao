@@ -5,21 +5,49 @@ Weekly record of work on the dissertation, newest first. One entry per ISO week.
 Supervision meeting notes, the open-work list and the detailed write-ups of the pipeline work
 are kept in the working repository; see [README.md](README.md) for where that is.
 
-## Where things stand — 4 Oct 2026
+## Where things stand — 8 Oct 2026
 
 Two strands, both live:
 
 - **Thesis.** Rescoped on 23/09 at Gonçalo's direction to **image-to-world mapping and
   camera calibration**, specifically the difficulty introduced by object *height*. Radar as
-  the reference sensor is parked. The literature search was reoriented to match; the
-  dissertation chapters are still a skeleton.
+  the reference sensor is parked. The literature search was reoriented to match: 148
+  candidates across four pillars. The dissertation chapters are still a skeleton, and
+  nothing is promoted to Zotero yet — this is the strand that now needs the time.
 - **Pipeline (`vision-foundry`).** Model export from ONNX to a TensorRT engine on a Jetson,
-  published to Harbor so any machine can find the engine built for it. Working end to end
-  against a live Harbor, with one caveat below.
+  published to Harbor so any machine can find the engine built for it. Proven on hardware:
+  yolo11n/s/m/x and **RT-DETR-L**, a non-YOLO model, all built through the queue on a real
+  Jetson. The catalogue runs on that Jetson and is used from the browser.
 
-**Open caveat:** the export has still never run on real Jetson hardware — every engine so far
-came from a faked `trtexec`. The Jetson became reachable on 27/09, so this is unblocked but
-not yet done.
+**Open:** the lab VM still runs the old Jenkins-based stack, so retiring Jenkins in the lab
+— rather than only on the branch — is waiting on the supervisor's go-ahead.
+
+---
+
+## 2026-W41 · 5 – 11 Oct *(entry to 8 Oct)*
+
+**Focus:** proving the pipeline is not YOLO-specific, and making the catalogue usable for
+real work rather than just browsing.
+
+- **Exported RT-DETR-L on the Jetson (05/10) — a non-YOLO model, through the whole pipeline.**
+  This is the sprint's main result: dropping the YOLO assumptions was the explicit request on
+  23/09, and this is the evidence it worked rather than a claim that it should. yolo11n, s, m
+  and x build through the same queue.
+- **Build sets (06/10).** One request now queues every buildable combination of targets,
+  precisions and batch settings, and each target carries its own push list, so a newly pushed
+  model gets the engines that target expects without anyone enumerating them.
+- Each build records **who asked for it** — the page, the CLI or Harbor's webhook — and a
+  running build now streams its newest log lines with each heartbeat, so a build can be
+  watched while it runs instead of only read afterwards.
+- `resolve` lists the engines it **cannot** offer and deletes them only on confirmation.
+- **Upload an ONNX model from the page (07/10)**, which queues its push builds immediately;
+  updated the catalogue running on the Jetson to this build the same day.
+- **Download engine files, packaged files and model versions through the catalogue (08/10)**,
+  streamed and digest-checked rather than trusted.
+
+**Next:** move the lab VM off `main` so Jenkins is retired in the lab and not only on the
+branch — that needs Gonçalo's go-ahead. Then back to the thesis itself: inspect the
+calibration API and the pole 61 camera records, and start quantifying the height error.
 
 ---
 
@@ -44,11 +72,17 @@ literature.
   `--reclassify` pass, since the rescope stranded papers under a pillar name no query could
   assign again. Fixed a gate that was admitting an animal-breeding paper at high relevance —
   "height", "distance" and "bias" are words every field uses. **73 → 148 candidates.**
-- Reorganised `notes/` into per-task folders and deleted three superseded documents after
-  folding their still-true content forward.
+- **First real export on Jetson hardware (29/09).** Until then every engine in the work had
+  come from a faked `trtexec`, so nothing had been proven end to end. `resolve` then picked
+  that engine out of the lab registry, which closes the loop the pipeline exists to close.
+- Rebuilt the catalogue as **server-rendered pages** instead of one JavaScript page (04/10):
+  a model list, a page per model comparing its engines and showing coverage and standing
+  policies, a page per engine, and job pages that refresh themselves and can cancel a build.
+  State-changing requests from other sites are refused, and every API answer is now typed.
 
-**Next:** define a second export target — there is still only one, so the target abstraction
-has never had to discriminate between two machines; then run a real export on the Jetson.
+**Next:** prove the pipeline is not YOLO-specific by building a non-YOLO model, and define a
+second export target — there is still only one, so the abstraction has never had to
+discriminate between two machines.
 
 ## 2026-W39 · 21 – 27 Sep
 
@@ -77,31 +111,7 @@ has never had to discriminate between two machines; then run a real export on th
 - **14/09 — meeting with Gonçalo.**
   Introduced to Vision Foundry, Harbor and the Jetson. The calibration problem stated for the
   first time: triangulating from three geographic points still carries error, and **it is hard
-  to determine the physical point of the object**. Given access to a Jetson (`nap-619`).
+  to determine the physical point of the object**. Given access to a Jetson.
   Also: anonymization must come *after* annotation, and DeepStream keeps the whole pipeline on
   the GPU with NVMM zero-copy buffers.
-- **16/09 — group gathering.** Did the CVAT
-  annotation work that was meant for Hugo; the cross-camera **ID mapping** problem in Vision
-  was raised as an open issue.
 - Reading and setup; no code committed this week.
-
-## 2026-W37 · 7 – 13 Sep
-
-**Focus:** standing the platform up as a deployable whole.
-
-- Prepared an **x86 controller** with published Harbor and Jenkins images, and brought both up
-  under a single root Compose project.
-- Added scoped cleanup scripts for worker and server, Harbor initialisation and provisioning,
-  and agent bootstrap with architecture-specific `kit` installation.
-- Refactored the export pipeline to support **dynamic batch** processing.
-
-## 2026-W36 · 31 Aug – 6 Sep
-
-**Focus:** first work on `vision-foundry` — getting a model exported and published at all.
-
-- Dynamic **Jetson environment detection** and version-based Docker tagging; the builder image
-  parameterised by JetPack, L4T, CUDA and TensorRT versions; upgraded to JetPack 6.2.1.
-- **Replaced MLflow orchestration with a Harbor webhook → Jenkins pipeline**, and packaged
-  KitOps exports with verified provenance and replay protection.
-- Added a webhook-to-download smoke test, and validated real Harbor-triggered YOLO exports
-  including engine reload, restart and duplicate-event handling.
