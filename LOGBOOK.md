@@ -1,6 +1,7 @@
 # Logbook
 
-Weekly record of work on the dissertation, newest first. One entry per ISO week.
+Weekly record of work on the dissertation, newest first. Weeks are numbered from the
+start of the work; week 1 began on 31 August 2026.
 
 Supervision meeting notes, the open-work list and the detailed write-ups of the pipeline work
 are kept in the working repository; see [README.md](README.md) for where that is.
@@ -24,7 +25,7 @@ Two strands, both live:
 
 ---
 
-## 2026-W41 · 5 – 11 Oct *(entry to 8 Oct)*
+## Week 6 · 5 – 11 Oct *(entry to 8 Oct)*
 
 **Focus:** proving the pipeline is not YOLO-specific, and making the catalogue usable for
 real work rather than just browsing.
@@ -51,7 +52,7 @@ calibration API and the pole 61 camera records, and start quantifying the height
 
 ---
 
-## 2026-W40 · 28 Sep – 4 Oct
+## Week 5 · 28 Sep – 4 Oct
 
 **Focus:** replacing Jenkins with an in-house queue and worker; code quality; reorienting the
 literature.
@@ -84,7 +85,7 @@ literature.
 second export target — there is still only one, so the abstraction has never had to
 discriminate between two machines.
 
-## 2026-W39 · 21 – 27 Sep
+## Week 4 · 21 – 27 Sep
 
 **Focus:** the 23/09 supervision meeting, and building what it asked for.
 
@@ -104,7 +105,7 @@ discriminate between two machines.
   their artefacts; and a precedence chain of pins, aliases and deprecations in front of the
   resolver.
 
-## 2026-W38 · 14 – 20 Sep
+## Week 3 · 14 – 20 Sep
 
 **Focus:** orientation on the group's systems, and the annotation work.
 
@@ -115,3 +116,24 @@ discriminate between two machines.
   Also: anonymization must come *after* annotation, and DeepStream keeps the whole pipeline on
   the GPU with NVMM zero-copy buffers.
 - Reading and setup; no code committed this week.
+
+## Week 2 · 7 – 13 Sep
+
+**Focus:** standing the platform up as a deployable whole.
+
+- Prepared an **x86 controller** with published Harbor and Jenkins images, and brought both up
+  under a single root Compose project.
+- Added scoped cleanup scripts for worker and server, Harbor initialisation and provisioning,
+  and agent bootstrap with architecture-specific `kit` installation.
+- Refactored the export pipeline to support **dynamic batch** processing.
+
+## Week 1 · 31 Aug – 6 Sep
+
+**Focus:** first work on `vision-foundry` — getting a model exported and published at all.
+
+- Dynamic **Jetson environment detection** and version-based Docker tagging; the builder image
+  parameterised by JetPack, L4T, CUDA and TensorRT versions; upgraded to JetPack 6.2.1.
+- **Replaced MLflow orchestration with a Harbor webhook → Jenkins pipeline**, and packaged
+  KitOps exports with verified provenance and replay protection.
+- Added a webhook-to-download smoke test, and validated real Harbor-triggered YOLO exports
+  including engine reload, restart and duplicate-event handling.
