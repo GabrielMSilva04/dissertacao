@@ -3,29 +3,73 @@
 Weekly record of work on the dissertation, newest first. Weeks are numbered from the start
 of my own work; week 1 began on 14 September 2026.
 
-The `vision-foundry` pipeline existed before that, built by Gonçalo Silva in early September.
-What is recorded below is my work on top of it — a branch of 141 commits at the time of
-writing, against the 41 that were already there.
 
 Supervision meeting notes, the open-work list and the detailed write-ups of the pipeline work
 are kept in the working repository; see [README.md](README.md) for where that is.
 
-## Where things stand — 8 Oct 2026
+## Where things stand — 3 Nov 2026
 
 Two strands, both live:
 
-- **Thesis.** Rescoped on 23/09 at Gonçalo's direction to **image-to-world mapping and
-  camera calibration**, specifically the difficulty introduced by object *height*. Radar as
-  the reference sensor is parked. The literature search was reoriented to match: 148
-  candidates across four pillars. The dissertation chapters are still a skeleton, and
-  nothing is promoted to Zotero yet — this is the strand that now needs the time.
+- **Thesis.** Widened on 20/10: calibration is no longer the centre. The subject is keeping
+  detection and classification of road users reliable from fixed urban cameras across
+  conditions such as night and fog, and using the detections for traffic counts, speeds and
+  events. The state of the art is organised in three approaches — fix the image before the
+  detector, make the features robust, adapt the detector — plus the work that measures what
+  detection feeds. 23 papers are in Zotero. The gap so far: none of the fog papers read
+  reports results on an edge device. The dissertation chapters are still a skeleton.
 - **Pipeline (`vision-foundry`).** Model export from ONNX to a TensorRT engine on a Jetson,
   published to Harbor so any machine can find the engine built for it. Proven on hardware:
   yolo11n/s/m/x and **RT-DETR-L**, a non-YOLO model, all built through the queue on a real
-  Jetson. The catalogue runs on that Jetson and is used from the browser.
+  Jetson. The catalogue runs on that Jetson and is used from the browser. The lab VM is off
+  the old Jenkins-based stack, so Jenkins is retired in the lab and not only on the branch.
+  No commits since 17/10.
 
-**Open:** the lab VM still runs the old Jenkins-based stack, so retiring Jenkins in the lab
-— rather than only on the branch — is waiting on the supervisor's go-ahead.
+---
+
+## Week 7 · 26 Oct – 1 Nov
+
+**Focus:** the state of the art for Sprint 2.
+
+  not only staying open on the approach.
+- Added **night, fog and camera-adaptation pillars** to the literature discovery script.
+- Read and compared the papers on the Sprint 2 slide: the Liu 2022 enhancement survey,
+  Aryashad 2026 (defogging scored by detection, real versus synthetic fog), YOLA (Hong 2024,
+  lighting-invariant features), Yoo 2024 (test-time detector adaptation) and the Zhou 2025
+  survey of traffic tasks built on detection.
+- Built the Sprint 2 slides (29–31/10) around those papers and where each one stops.
+
+## Week 6 · 19 – 25 Oct
+
+**Focus:** the 20/10 supervision meeting, and the literature behind it.
+
+- **20/10 — supervision meeting.** Focus less on calibration. Analyse options for the
+  thesis: optimising images by time of day, gathering statistics, detecting events, and
+  models that process only the tiles with motion, to save computation. Freedom to explore,
+  and generalise the second sprint. Recommended reading: the Liu, Pedersen and Wang (2022)
+  survey of natural image enhancement.
+- **19/10** — made literature searches reportable, with a log of every run, added acronym and
+  IEEE Thesaurus terms to the search vocabulary, and generated `references.bib` from the
+  Zotero collection.
+
+## Week 5 · 12 – 18 Oct
+
+**Focus:** Sprint 1, setting up the working repository, and a usability pass on the catalogue.
+
+- **Sprint 1 (13/10)** — motivation and objectives, still on the 23/09 calibration scope.
+- **Working repository (13/10)**: course material, the dissertation source, the proposal and
+  the sprint material in one private repository. The dissertation moved to the **official UA
+  LaTeX template** (18/10), and meeting, reading and pipeline notes were brought in.
+- **Literature discovery script (18/10)** on OpenAlex, with tests, added to the working
+  repository.
+- **Catalogue usability pass (17/10).** A build's TensorRT output reaches its job page while it
+  runs; a failed build names its cause and suggests what to try; a finished build can be run
+  again with the same settings; an engine links to the build that made it and shows its
+  inputs, outputs and exporter metadata; uploads check the ONNX model and name before sending
+  the file; a model version's page is split into Engines and Build tabs.
+- Tests for the benchmark, export and provisioning failure paths and for Harbor
+  initialisation (17/10). The server stack's catalogue now uploads with the worker's robot
+  account (15/10).
 
 ---
 
