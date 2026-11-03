@@ -23,13 +23,12 @@ describes lives elsewhere, and this explains where.
 
 Two strands, which meet in the dissertation's integration chapter.
 
-**Detection and localization (the thesis).** Detecting and classifying road users from fixed
-urban cameras, and turning a detection into a position in the world. Since 23/09 the centre
-of the work is **image-to-world mapping and camera calibration** — specifically the error
-introduced by object *height*. Projecting an image point to the world needs an assumption
-about depth; the usual one is that the point lies on the ground plane, which holds for the
-contact point of a wheel and fails for anything with height. Choosing *which* point on a
-detection to project is part of the research question, not an implementation detail.
+**Detection and classification (the thesis).** Keeping detection and classification of road
+users reliable from fixed urban cameras across conditions such as day, night and fog, and
+using the detections for traffic counts, speeds and events. Since 20/10 the subject is
+deliberately broad: the options under study include optimising images by time of day,
+gathering statistics, detecting events, and processing only the parts of the frame with
+motion. Camera calibration, the focus from 23/09, is no longer the centre.
 
 **The model pipeline (infrastructure).** Taking a trained model from ONNX to a TensorRT
 engine compiled for a specific edge device, published so that any machine in the fleet can
